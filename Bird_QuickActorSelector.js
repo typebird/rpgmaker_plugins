@@ -3,6 +3,7 @@
 //=============================================================================
 // version 1.0.0
 //=============================================================================
+// 2021-10-26 - v1.0.1       - 修正錯字。
 // 2021-10-26 - v1.0.0       - 最初版本。
 //=============================================================================
 
@@ -128,7 +129,7 @@
      */
     const _triggerGap = !_param_triggerGap || _param_triggerGap === ""
         ? [25, 20, 10, 5]
-        : _param_triggerGap.sprite(",").map(v => Number(v))
+        : _param_triggerGap.split(",").map(v => Number(v))
 
     //=============================================================================
 
@@ -663,10 +664,3 @@
             SceneManager.push(Scene_BirdsQuickSelector)
     }
 })()
-
-
-
-
-// // for test
-// const intoPluginWindow = () => SceneManager.push(Scene_QuickActorSelector)
-// const exitPluginWindow = () => SceneManager.pop()
