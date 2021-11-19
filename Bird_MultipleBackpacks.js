@@ -1,20 +1,41 @@
 //=============================================================================
 // Bird's Multiple Backpacks
 //=============================================================================
-// version 1.0.0
+// version 1.0.1
 //=============================================================================
+// 2021-08-06 - v1.0.1       - 修正保存時沒有儲存最新背包資料的錯誤。
 // 2021-08-06 - v1.0.0       - 最初版本。
 //=============================================================================
 /*:
  * @target MZ
  * @author 竹鳥
- * @plugindesc (1.0.0) 簡易多背包插件。
+ * @url https://home.gamer.com.tw/homeindex.php?owner=sansarea
+ * @plugindesc (v1.0.1) 簡易多背包插件。
  * 
  * @help Bird_MultipleBackpacks.js
  * 
  * # 功能簡介
  * 
  * 這個插件讓製作者可以使用多個背包，透過插件指令切換。
+ * 
+ * # 控制參數
+ * 
+ * - default_name = "0"
+ *   這是當開啟新遊戲時，預設背包所使用的名字。
+ *   可以是任意字串，唯應注意在切換時必需使用完全一致的名稱，我才能切換到對應背包。
+ * 
+ * 
+ * # 插件指令
+ * 
+ * - use_change_backpack_by_variable
+ *   切換至變數對應的背包，如果不存在，則建立空背包。
+ *     - variable variable_index = 1
+ *       要使用的變數
+ * 
+ * - use_change_backpack_by_string
+ *   切換至文字對應的背包，如果不存在，則建立空背包。
+ *     - string backpack_name = "1"
+ *       要使用的背包標籤。
  * 
  * @param default_name
  * @text 預設背包的名稱
@@ -100,9 +121,9 @@
         const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x)
 
         const getSave = () => window[Birds][thisPlugin].backpackData
-        const setSave = allData => (
-            window[Birds][thisPlugin].backpackData = allData,
-            allData
+        const setSave = all => (
+            window[Birds][thisPlugin].backpackData = all,
+            all
         )
 
         const getNowBackpack = () => ({
@@ -122,26 +143,33 @@
 
         const getDataByKeyOrDefault = def => data => data[key] || def
 
-        const setNewUseingBackpack = () => {
+        const getAllBackpack = () => {
             const now = getNowBackpack()
             const all = getSave()
 
-            all[all.useing] = now
-            all.useing = key
-
-            return all
+            return Object.assign({}, all, { [all.useing]: now })
         }
+
+        const setNewUseingKey = all =>
+            Object.assign({}, all, { useing: key })
 
 
         const useChange = pipe(
-            setNewUseingBackpack,
+            getAllBackpack,
+            setNewUseingKey,
             setSave,
             getDataByKeyOrDefault({ items: {}, weapons: {}, armors: {}, gold: 0 }),
             setNewBackpack
         )
 
+        const useSaveAll = pipe(
+            getAllBackpack,
+            setSave,
+        )
+
         return {
             useChange: useChange,
+            useSaveAll: useSaveAll,
         }
     }
 
@@ -166,6 +194,8 @@
 
     DataManager.makeSaveContents = function () {
         const content = DataManager_MakeSaveContents()
+
+        GameBackpack().useSaveAll()
 
         content[savaDataKey] = {
             backpackData: window[Birds][thisPlugin].backpackData,
