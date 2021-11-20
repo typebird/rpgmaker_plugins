@@ -1,8 +1,9 @@
 //=============================================================================
 // Bird's Multiple Backpacks
 //=============================================================================
-// version 1.0.1
+// version 1.0.2
 //=============================================================================
+// 2021-08-06 - v1.0.2       - 調整參數位置以讓程式更清楚。
 // 2021-08-06 - v1.0.1       - 修正保存時沒有儲存最新背包資料的錯誤。
 // 2021-08-06 - v1.0.0       - 最初版本。
 //=============================================================================
@@ -10,7 +11,7 @@
  * @target MZ
  * @author 竹鳥
  * @url https://home.gamer.com.tw/homeindex.php?owner=sansarea
- * @plugindesc (v1.0.1) 簡易多背包插件。
+ * @plugindesc (v1.0.2) 簡易多背包插件。
  * 
  * @help Bird_MultipleBackpacks.js
  * 
@@ -94,11 +95,11 @@
 
     // 定義插件命令功能
     PluginManager.registerCommand(filename, "use_change_backpack_by_variable", args =>
-        GameBackpack($gameVariables.value(args.variable_index)).useChange()
+        GameBackpack().useChange($gameVariables.value(args.variable_index))
     )
 
     PluginManager.registerCommand(filename, "use_change_backpack_by_string", args =>
-        GameBackpack(args.backpack_name).useChange()
+        GameBackpack().useChange(args.backpack_name)
     )
 
 
@@ -117,7 +118,7 @@
 
 
 
-    function GameBackpack(key) {
+    function GameBackpack() {
         const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x)
 
         const getSave = () => window[Birds][thisPlugin].backpackData
@@ -141,7 +142,7 @@
             return newBackpack
         }
 
-        const getDataByKeyOrDefault = def => data => data[key] || def
+        const getDataByKeyOrDefault = (key, def) => data => data[key] || def
 
         const getAllBackpack = () => {
             const now = getNowBackpack()
@@ -150,17 +151,17 @@
             return Object.assign({}, all, { [all.useing]: now })
         }
 
-        const setNewUseingKey = all =>
+        const setNewUseingKey = key => all =>
             Object.assign({}, all, { useing: key })
 
 
-        const useChange = pipe(
+        const useChange = key => pipe(
             getAllBackpack,
-            setNewUseingKey,
+            setNewUseingKey(key),
             setSave,
-            getDataByKeyOrDefault({ items: {}, weapons: {}, armors: {}, gold: 0 }),
+            getDataByKeyOrDefault(key, { items: {}, weapons: {}, armors: {}, gold: 0 }),
             setNewBackpack
-        )
+        )()
 
         const useSaveAll = pipe(
             getAllBackpack,
