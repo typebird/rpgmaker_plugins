@@ -12,10 +12,10 @@
 
 # 插件
 
-| name                                                                                                         | stable version | last version | intro                                                                                    |
-| ------------------------------------------------------------------------------------------------------------ | -------------- | ------------ | ---------------------------------------------------------------------------------------- |
-| [Bird_MultipleBackpacks](https://github.com/typebird/rpgmaker_plugins/blob/main/Bird_MultipleBackpacks.js)   | v1.0.2         | v1.0.2       | 這個插件讓製作者可以使用多個背包，透過插件指令切換。                                     |
-| [Bird_QuickActorSelector](https://github.com/typebird/rpgmaker_plugins/blob/main/Bird_QuickActorSelector.js) | v1.0.2         | v1.0.2       | 當玩家按下指定按鍵，能呼叫出一個簡單窗口，以方向鍵查看隊伍內各個角色的資料，並切換隊長。 |
+| name                                                                                                                | stable version | last version | intro                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------- | -------------- | ------------ | ---------------------------------------------------------------------------------------- |
+| [Bird_MultipleBackpacks](https://github.com/typebird/rpgmaker_plugins/blob/main/plugin/Bird_MultipleBackpacks.js)   | v1.0.2         | v1.0.2       | 這個插件讓製作者可以使用多個背包，透過插件指令切換。                                     |
+| [Bird_QuickActorSelector](https://github.com/typebird/rpgmaker_plugins/blob/main/plugin/Bird_QuickActorSelector.js) | v1.0.2         | v1.0.2       | 當玩家按下指定按鍵，能呼叫出一個簡單窗口，以方向鍵查看隊伍內各個角色的資料，並切換隊長。 |
 
 # 片段
 
